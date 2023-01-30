@@ -4,6 +4,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
+import logic.Board
 import ui.GameSettings
 import ui.Screen
 import ui.composable.*
@@ -29,55 +30,73 @@ fun App() {
             Settings(
                 gameSettings = gameSettings,
                 onEasyDifficultyClick = {
-                    gameSettings = GameSettings(
-                        columnsNumber = 10,
-                        rowsNumber = 10,
-                        bombsNumber = 10,
+                    val board = Board(
+                        rows = 10,
+                        cols = 10,
+                        bombCount = 10,
                     )
-                    screenState = Screen.Game(gameSettings)
+                    board.setup()
+                    screenState = Screen.Game(board)
                 },
                 onMediumDifficultyClick = {
-                    gameSettings = GameSettings(
-                        columnsNumber = 20,
-                        rowsNumber = 20,
-                        bombsNumber = 30,
+                    val board = Board(
+                        rows = 20,
+                        cols = 20,
+                        bombCount = 30,
                     )
-                    screenState = Screen.Game(gameSettings)
+                    board.setup()
+                    screenState = Screen.Game(board)
                 },
                 onHardDifficultyClick = {
-                    gameSettings = GameSettings(
-                        columnsNumber = 30,
-                        rowsNumber = 30,
-                        bombsNumber = 50,
+                    val board = Board(
+                        rows = 30,
+                        cols = 30,
+                        bombCount = 50,
                     )
-                    screenState = Screen.Game(gameSettings)
+                    board.setup()
+                    screenState = Screen.Game(board)
                 },
                 onColumnsNumberChosen = { columns ->
-                    if (columns.toIntOrNull() != null)
-                        gameSettings = gameSettings.copy(columnsNumber = columns.toInt())
-                    else if (columns.isBlank())
+                    if (columns.substringBefore('.').toIntOrNull() != null) {
+                        gameSettings = gameSettings.copy(
+                            columnsNumber = columns.substringBefore('.').toInt(),
+                            bombsNumber = gameSettings.getBombsNumber(columns.substringBefore('.').toInt(), true),
+                        )
+                    } else if (columns.isBlank())
                         gameSettings = gameSettings.copy(columnsNumber = 0)
                 },
                 onRowsNumberChosen = { rows ->
-                    if (rows.toIntOrNull() != null)
-                        gameSettings = gameSettings.copy(rowsNumber = rows.toInt())
-                    else if (rows.isBlank())
+                    if (rows.substringBefore('.').toIntOrNull() != null) {
+                        gameSettings = gameSettings.copy(
+                            rowsNumber = rows.substringBefore('.').toInt(),
+                            bombsNumber = gameSettings.getBombsNumber(rows.substringBefore('.').toInt(), false),
+                        )
+                    } else if (rows.isBlank())
                         gameSettings = gameSettings.copy(rowsNumber = 0)
                 },
                 onBombsNumberChosen = { bombs ->
-                    if (bombs.toIntOrNull() != null)
-                        gameSettings = gameSettings.copy(bombsNumber = bombs.toInt())
+                    if (bombs.substringBefore('.').toIntOrNull() != null)
+                        gameSettings = gameSettings.copy(bombsNumber = bombs.substringBefore('.').toInt())
                     else if (bombs.isBlank())
                         gameSettings = gameSettings.copy(bombsNumber = 0)
                 },
                 onBackClick = { screenState = Screen.Menu },
-                onOkClick = { screenState = Screen.Game(gameSettings) },
+                onOkClick = {
+                    val board = Board(
+                        rows = gameSettings.rowsNumber,
+                        cols = gameSettings.columnsNumber,
+                        bombCount = gameSettings.bombsNumber,
+                    )
+                    board.setup()
+                    screenState = Screen.Game(board)
+                },
             )
         }
 
         is Screen.Game -> {
             Game(
-                gameSettings = gameSettings,
+                onBackClick = { screenState = Screen.Menu },
+                board = (screenState as Screen.Game).board,
             )
         }
 
@@ -96,9 +115,17 @@ fun App() {
 }
 
 fun main() = application {
-    Window(onCloseRequest = ::exitApplication) {
+    Window(
+        title = "Minesweeper",
+        onCloseRequest = ::exitApplication,
+    ) {
         MaterialTheme {
             App()
         }
     }
 }
+
+private fun GameSettings.getBombsNumber(updatedValue: Int, isColumns: Boolean) =
+    if (bombsNumber < updatedValue * if (isColumns) rowsNumber else columnsNumber) bombsNumber
+    else (updatedValue * if (isColumns) rowsNumber else columnsNumber) - 1
+

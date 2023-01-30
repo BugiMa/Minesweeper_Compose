@@ -5,7 +5,7 @@ class Board(
     private val cols: Int,
     private val bombCount: Int
 ) {
-    private lateinit var board: Array<Array<Field>>
+    lateinit var board: Array<Array<Field>>
 
     init {
         createEmptyBoard()
@@ -32,7 +32,7 @@ class Board(
 
             board[bombRow][bombCol].let { field ->
                 if (field.state != FieldState.BOMB) {
-                    field.state = FieldState.BOMB
+                    board[bombRow][bombCol] = field.copy(state = FieldState.BOMB)
                     i++
                 }
             }
@@ -53,8 +53,10 @@ class Board(
         for (r in row.validRange(rows)) {
             for (c in col.validRange(cols)) {
                 if (board[r][c].state != FieldState.BOMB) {
-                    board[r][c].number += 1
-                    board[r][c].state = FieldState.NUMBER
+                    board[r][c] = board[r][c].copy(
+                        number = board[r][c].number + 1,
+                        state = FieldState.NUMBER,
+                    )
                 }
             }
         }
@@ -63,7 +65,7 @@ class Board(
     fun uncoverField(row: Int, col: Int) {
         board[row][col].let { field ->
             if (field.isUncovered || field.isFlagged) return
-            field.isUncovered = true
+            board[row][col] = field.copy(isUncovered = true)
             when (field.state) {
                 FieldState.EMPTY -> {uncoverAround(row, col)}
                 FieldState.NUMBER -> {}
@@ -72,14 +74,21 @@ class Board(
         }
     }
 
-    fun uncoverAround(row: Int, col: Int) {
+    private fun uncoverAround(row: Int, col: Int) {
         for (r in row.validRange(rows)) {
             for (c in col.validRange(cols)) {
                 board[row][col].let { field ->
                     if (field.isUncovered || field.isFlagged) return
                     when (field.state) {
-                        FieldState.EMPTY -> { field.isUncovered = true; uncoverAround(row, col) }
-                        FieldState.NUMBER -> { field.isUncovered = true }
+                        FieldState.EMPTY -> {
+                            board[row][col] = field.copy(isUncovered = true)
+                            uncoverAround(row, col)
+                        }
+
+                        FieldState.NUMBER -> {
+                            board[row][col] = field.copy(isUncovered = true)
+                        }
+
                         else -> return
                     }
                 }
@@ -95,11 +104,9 @@ class Board(
     }
 
     fun resetCurrentBoard() {
-        board.forEach { row ->
-            row.forEach { field ->
-                field.apply {
-                    isUncovered = false
-                }
+        board.forEachIndexed { rowIndex, row ->
+            row.forEachIndexed { fieldIndex, field ->
+                board[rowIndex][fieldIndex] = field.copy(isUncovered = false)
             }
         }
     }

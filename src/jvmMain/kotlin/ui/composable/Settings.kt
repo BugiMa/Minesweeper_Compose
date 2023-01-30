@@ -1,15 +1,12 @@
 package ui.composable
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Button
+import androidx.compose.material.Slider
 import androidx.compose.material.Text
-import androidx.compose.material.TextField
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.awt.ComposeDialog
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import ui.GameSettings
@@ -86,8 +83,7 @@ fun CustomSettingsDialog(
 ) {
     Dialog(
         visible = visible,
-        create = { ComposeDialog() },
-        dispose = { onDisposeClick() },
+        onCloseRequest = onDisposeClick,
     ) {
         Column(
             verticalArrangement = Arrangement.SpaceAround,
@@ -100,12 +96,28 @@ fun CustomSettingsDialog(
                     .fillMaxWidth()
                     .padding(horizontal = 50.dp),
             ) {
-                Text(text = "Rows")
-                TextField(
-                    value = gameSettings.rowsNumber.toString(),
-                    onValueChange = { value -> onRowsNumberChosen(value) },
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                    modifier = Modifier.width(100.dp),
+                Text(text = "Rows: ")
+                Text(text = gameSettings.rowsNumber.toString())
+                Slider(
+                    value = gameSettings.rowsNumber.toFloat(),
+                    valueRange = 4f..32f,
+                    onValueChange = { value -> onRowsNumberChosen(value.toString()) },
+                )
+            }
+
+            Row(
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 50.dp),
+            ) {
+                Text(text = "Columns: ")
+                Text(text = gameSettings.columnsNumber.toString())
+                Slider(
+                    value = gameSettings.columnsNumber.toFloat(),
+                    valueRange = 4f..32f,
+                    onValueChange = { value -> onColumnsNumberChosen(value.toString()) },
                 )
             }
 
@@ -115,27 +127,12 @@ fun CustomSettingsDialog(
                     .fillMaxWidth()
                     .padding(horizontal = 50.dp),
             ) {
-                Text(text = "Columns")
-                TextField(
-                    value = gameSettings.columnsNumber.toString(),
-                    onValueChange = { value -> onColumnsNumberChosen(value) },
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                    modifier = Modifier.width(100.dp),
-                )
-            }
-
-            Row(
-                horizontalArrangement = Arrangement.SpaceBetween,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 50.dp),
-            ) {
-                Text(text = "Bombs")
-                TextField(
-                    value = gameSettings.bombsNumber.toString(),
-                    onValueChange = { value -> onBombsNumberChosen(value) },
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                    modifier = Modifier.width(100.dp),
+                Text(text = "Bombs: ")
+                Text(text = gameSettings.bombsNumber.toString())
+                Slider(
+                    value = gameSettings.bombsNumber.toFloat(),
+                    valueRange = 1f..(gameSettings.columnsNumber * gameSettings.rowsNumber) - 1f,
+                    onValueChange = { value -> onBombsNumberChosen(value.toString()) },
                 )
             }
 
