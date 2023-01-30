@@ -63,13 +63,28 @@ class Board(
     fun uncoverField(row: Int, col: Int) {
         board[row][col].let { field ->
             if (field.isUncovered || field.isFlagged) return
+            field.isUncovered = true
             when (field.state) {
-                FieldState.EMPTY -> {}
+                FieldState.EMPTY -> {uncoverAround(row, col)}
                 FieldState.NUMBER -> {}
                 FieldState.BOMB -> {}
             }
         }
+    }
 
+    fun uncoverAround(row: Int, col: Int) {
+        for (r in row.validRange(rows)) {
+            for (c in col.validRange(cols)) {
+                board[row][col].let { field ->
+                    if (field.isUncovered || field.isFlagged) return
+                    when (field.state) {
+                        FieldState.EMPTY -> { field.isUncovered = true; uncoverAround(row, col) }
+                        FieldState.NUMBER -> { field.isUncovered = true }
+                        else -> return
+                    }
+                }
+            }
+        }
     }
 
     private fun Int.validRange(max: Int): IntRange {
