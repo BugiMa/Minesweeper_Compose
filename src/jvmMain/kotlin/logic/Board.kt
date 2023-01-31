@@ -77,19 +77,20 @@ class Board(
     private fun uncoverAround(row: Int, col: Int) {
         for (r in row.validRange(rows)) {
             for (c in col.validRange(cols)) {
-                board[row][col].let { field ->
-                    if (field.isUncovered || field.isFlagged) return
-                    when (field.state) {
-                        FieldState.EMPTY -> {
-                            board[row][col] = field.copy(isUncovered = true)
-                            uncoverAround(row, col)
-                        }
+                board[r][c].let { field ->
+                    if (!field.isUncovered && !field.isFlagged && !(r == row && c == col)) {
+                        when (field.state) {
+                            FieldState.EMPTY -> {
+                                board[r][c] = board[r][c].copy(isUncovered = true)
+                                uncoverAround(r, c)
+                            }
 
-                        FieldState.NUMBER -> {
-                            board[row][col] = field.copy(isUncovered = true)
-                        }
+                            FieldState.NUMBER -> {
+                                board[r][c] = board[r][c].copy(isUncovered = true)
+                            }
 
-                        else -> return
+                            else -> return
+                        }
                     }
                 }
             }
@@ -110,4 +111,10 @@ class Board(
             }
         }
     }
+
+    fun flagField(row: Int, col: Int) {
+        board[row][col] = board[row][col].copy(isFlagged = !board[row][col].isFlagged)
+    }
+
+    fun checkForWin() = false // TODO
 }

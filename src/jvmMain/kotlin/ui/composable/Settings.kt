@@ -7,7 +7,9 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import ui.GameSettings
 
@@ -33,26 +35,77 @@ fun Settings(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier.fillMaxSize(),
         ) {
-            Text(text = "Difficulty")
+            Text(
+                text = "Difficulty",
+                fontWeight = FontWeight.ExtraBold,
+            )
 
-            Button(onClick = onEasyDifficultyClick) {
-                Text(text = "Easy")
+            Button(
+                onClick = onEasyDifficultyClick,
+                modifier = Modifier
+                    .size(
+                        width = 300.dp,
+                        height = 60.dp,
+                    ),
+            ) {
+                Text(
+                    text = "Easy",
+                    fontWeight = FontWeight.ExtraBold,
+                    fontSize = 14.sp,
+                )
             }
 
-            Button(onClick = onMediumDifficultyClick) {
-                Text(text = "Medium")
+            Button(
+                onClick = onMediumDifficultyClick,
+                modifier = Modifier
+                    .size(
+                        width = 300.dp,
+                        height = 60.dp,
+                    ),
+            ) {
+                Text(
+                    text = "Medium",
+                    fontWeight = FontWeight.ExtraBold,
+                    fontSize = 14.sp,
+                )
             }
 
-            Button(onClick = onHardDifficultyClick) {
-                Text(text = "Hard")
+            Button(
+                onClick = onHardDifficultyClick,
+                modifier = Modifier
+                    .size(
+                        width = 300.dp,
+                        height = 60.dp,
+                    ),
+            ) {
+                Text(
+                    text = "Hard",
+                    fontWeight = FontWeight.ExtraBold,
+                    fontSize = 14.sp,
+                )
             }
 
-            Button(onClick = { dialogVisibility = true }) {
-                Text(text = "Custom")
+            Button(
+                onClick = { dialogVisibility = true },
+                modifier = Modifier
+                    .size(
+                        width = 300.dp,
+                        height = 60.dp,
+                    ),
+            ) {
+                Text(
+                    text = "Custom",
+                    fontWeight = FontWeight.ExtraBold,
+                    fontSize = 14.sp,
+                )
             }
 
             Button(onClick = onBackClick) {
-                Text(text = "Back")
+                Text(
+                    text = "Back",
+                    fontWeight = FontWeight.ExtraBold,
+                    fontSize = 14.sp,
+                )
             }
         }
     }
@@ -92,15 +145,19 @@ fun CustomSettingsDialog(
         ) {
             Row(
                 horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 50.dp),
             ) {
-                Text(text = "Rows: ")
+                Text(
+                    text = "Rows: ",
+                    fontWeight = FontWeight.ExtraBold,
+                )
                 Text(text = gameSettings.rowsNumber.toString())
                 Slider(
                     value = gameSettings.rowsNumber.toFloat(),
-                    valueRange = 4f..32f,
+                    valueRange = 4f..20f,
                     onValueChange = { value -> onRowsNumberChosen(value.toString()) },
                 )
             }
@@ -112,22 +169,29 @@ fun CustomSettingsDialog(
                     .fillMaxWidth()
                     .padding(horizontal = 50.dp),
             ) {
-                Text(text = "Columns: ")
+                Text(
+                    text = "Columns: ",
+                    fontWeight = FontWeight.ExtraBold,
+                )
                 Text(text = gameSettings.columnsNumber.toString())
                 Slider(
                     value = gameSettings.columnsNumber.toFloat(),
-                    valueRange = 4f..32f,
+                    valueRange = 4f..40f,
                     onValueChange = { value -> onColumnsNumberChosen(value.toString()) },
                 )
             }
 
             Row(
                 horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 50.dp),
             ) {
-                Text(text = "Bombs: ")
+                Text(
+                    text = "Bombs: ",
+                    fontWeight = FontWeight.ExtraBold,
+                )
                 Text(text = gameSettings.bombsNumber.toString())
                 Slider(
                     value = gameSettings.bombsNumber.toFloat(),

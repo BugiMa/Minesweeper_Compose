@@ -3,11 +3,15 @@ import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.window.Window
+import androidx.compose.ui.window.WindowPlacement
 import androidx.compose.ui.window.application
 import logic.Board
 import ui.GameSettings
 import ui.Screen
-import ui.composable.*
+import ui.composable.Credits
+import ui.composable.Game
+import ui.composable.Menu
+import ui.composable.Settings
 import kotlin.system.exitProcess
 
 @Composable
@@ -20,7 +24,6 @@ fun App() {
         is Screen.Menu -> {
             Menu(
                 onPlayClick = { screenState = Screen.Settings },
-                onScoreboardClick = { screenState = Screen.Scoreboard },
                 onCreditsClick = { screenState = Screen.Credits },
                 onExitClick = { (::exitProcess)(0) },
             )
@@ -40,18 +43,18 @@ fun App() {
                 },
                 onMediumDifficultyClick = {
                     val board = Board(
-                        rows = 20,
+                        rows = 15,
                         cols = 20,
-                        bombCount = 30,
+                        bombCount = 50,
                     )
                     board.setup()
                     screenState = Screen.Game(board)
                 },
                 onHardDifficultyClick = {
                     val board = Board(
-                        rows = 30,
-                        cols = 30,
-                        bombCount = 50,
+                        rows = 20,
+                        cols = 40,
+                        bombCount = 100,
                     )
                     board.setup()
                     screenState = Screen.Game(board)
@@ -100,12 +103,6 @@ fun App() {
             )
         }
 
-        is Screen.Scoreboard -> {
-            Scoreboard(
-                onBackClick = { screenState = Screen.Menu },
-            )
-        }
-
         is Screen.Credits -> {
             Credits(
                 onBackClick = { screenState = Screen.Menu },
@@ -118,8 +115,11 @@ fun main() = application {
     Window(
         title = "Minesweeper",
         onCloseRequest = ::exitApplication,
+        resizable = true,
+        alwaysOnTop = true,
     ) {
         MaterialTheme {
+            window.placement = WindowPlacement.Fullscreen
             App()
         }
     }
