@@ -1,11 +1,14 @@
 package logic
 
-class Field(
-    var isUncovered: Boolean = false,
-    var isFlagged: Boolean = false,
-    var state: FieldState = FieldState.EMPTY,
-    var number: Int = 0
-) {}
+import androidx.compose.runtime.Immutable
+
+@Immutable
+data class Field(
+    val isUncovered: Boolean = false,
+    val isFlagged: Boolean = false,
+    val state: FieldState = FieldState.EMPTY,
+    val number: Int = 0
+)
 
 enum class FieldState {
     EMPTY,
