@@ -51,7 +51,10 @@ fun Game(
                     .fillMaxWidth(),
             ) {
                 Button(onClick = onBackClick) {
-                    Text(text = "Back")
+                    Text(
+                        text = "Back",
+                        fontWeight = FontWeight.ExtraBold,
+                    )
                 }
                 Button(
                     onClick = {
@@ -60,7 +63,10 @@ fun Game(
                         ticks = 0
                     }
                 ) {
-                    Text(text = "Refresh")
+                    Text(
+                        text = "Refresh",
+                        fontWeight = FontWeight.ExtraBold,
+                    )
                 }
                 Button(
                     onClick = {},
@@ -74,6 +80,7 @@ fun Game(
                     )
                     Text(
                         text = "$ticks",
+                        fontWeight = FontWeight.ExtraBold,
                         modifier = Modifier.defaultMinSize(minWidth = 20.dp),
                     )
                 }
