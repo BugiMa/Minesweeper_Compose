@@ -116,5 +116,13 @@ class Board(
         board[row][col] = board[row][col].copy(isFlagged = !board[row][col].isFlagged)
     }
 
-    fun checkForWin() = false // TODO
+    fun checkForWin(): Boolean {
+        var bombsFlagged = 0
+        board.forEach { row ->
+            row.forEach { field ->
+                if (field.isFlagged && field.state == FieldState.BOMB) bombsFlagged++
+            }
+        }
+        return bombsFlagged == bombCount
+    }
 }

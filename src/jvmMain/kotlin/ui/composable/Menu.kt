@@ -1,17 +1,19 @@
 package ui.composable
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import ui.Colors
 
 @Composable
 fun Menu(
@@ -19,59 +21,84 @@ fun Menu(
     onCreditsClick: () -> Unit,
     onExitClick: () -> Unit,
 ) {
-    Column(
-        verticalArrangement = Arrangement.SpaceAround,
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.fillMaxSize(),
+    Box(
+        contentAlignment = Alignment.Center,
+        modifier = Modifier.fillMaxSize().background(color = Color(Colors.grayDark)),
     ) {
-        Text(
-            text = "Menu",
-            fontWeight = FontWeight.ExtraBold,
-        )
-
-        Button(
-            onClick = onPlayClick,
-            modifier = Modifier
-                .size(
-                    width = 300.dp,
-                    height = 60.dp,
-                ),
+        Column(
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier.wrapContentHeight()
+                .background(
+                    color = Color(Colors.gray),
+                    shape = RoundedCornerShape(8.dp)
+                )
+                .padding(24.dp)
         ) {
             Text(
-                text = "Play",
+                text = "Menu",
+                fontSize = 24.sp,
                 fontWeight = FontWeight.ExtraBold,
-                fontSize = 14.sp,
+                color = Color(Colors.white),
+                modifier = Modifier.padding(24.dp),
             )
-        }
 
-        Button(
-            onClick = onCreditsClick,
-            modifier = Modifier
-                .size(
-                    width = 300.dp,
-                    height = 60.dp,
+            Button(
+                onClick = onPlayClick,
+                colors = ButtonDefaults.buttonColors(
+                    backgroundColor = Color(Colors.blue),
+                    contentColor = Color(Colors.white)
                 ),
-        ) {
-            Text(
-                text = "Credits",
-                fontWeight = FontWeight.ExtraBold,
-                fontSize = 14.sp,
-            )
-        }
+                modifier = Modifier.padding(16.dp)
+                    .size(
+                        width = 300.dp,
+                        height = 60.dp,
+                    ),
+            ) {
+                Text(
+                    text = "Play",
+                    fontWeight = FontWeight.ExtraBold,
+                    fontSize = 14.sp,
+                )
+            }
 
-        Button(
-            onClick = onExitClick,
-            modifier = Modifier
-                .size(
-                    width = 300.dp,
-                    height = 60.dp,
+            Button(
+                onClick = onCreditsClick,
+                colors = ButtonDefaults.buttonColors(
+                    backgroundColor = Color(Colors.blue),
+                    contentColor = Color(Colors.white)
                 ),
-        ) {
-            Text(
-                text = "Exit",
-                fontWeight = FontWeight.ExtraBold,
-                fontSize = 14.sp,
-            )
+                modifier = Modifier.padding(16.dp)
+                    .size(
+                        width = 300.dp,
+                        height = 60.dp,
+                    ),
+            ) {
+                Text(
+                    text = "Credits",
+                    fontWeight = FontWeight.ExtraBold,
+                    fontSize = 14.sp,
+                )
+            }
+
+            Button(
+                onClick = onExitClick,
+                colors = ButtonDefaults.buttonColors(
+                    backgroundColor = Color(Colors.blue),
+                    contentColor = Color(Colors.white)
+                ),
+                modifier = Modifier.padding(16.dp)
+                    .size(
+                        width = 300.dp,
+                        height = 60.dp,
+                    ),
+            ) {
+                Text(
+                    text = "Exit",
+                    fontWeight = FontWeight.ExtraBold,
+                    fontSize = 14.sp,
+                )
+            }
         }
     }
 }

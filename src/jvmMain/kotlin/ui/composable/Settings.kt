@@ -1,16 +1,21 @@
 package ui.composable
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Slider
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
+import ui.Colors
 import ui.GameSettings
 
 @Composable
@@ -28,21 +33,34 @@ fun Settings(
     var dialogVisibility by remember { mutableStateOf(false) }
 
     Box(
-        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center,
+        modifier = Modifier.fillMaxSize().background(color = Color(Colors.grayDark)),
     ) {
         Column(
-            verticalArrangement = Arrangement.SpaceAround,
+            verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier.wrapContentHeight()
+                .background(
+                    color = Color(Colors.gray),
+                    shape = RoundedCornerShape(8.dp)
+                )
+                .padding(24.dp)
         ) {
             Text(
                 text = "Difficulty",
+                fontSize = 24.sp,
+                color = Color(Colors.white),
                 fontWeight = FontWeight.ExtraBold,
+                modifier = Modifier.padding(24.dp),
             )
 
             Button(
                 onClick = onEasyDifficultyClick,
-                modifier = Modifier
+                colors = ButtonDefaults.buttonColors(
+                    backgroundColor = Color(Colors.blue),
+                    contentColor = Color(Colors.white)
+                ),
+                modifier = Modifier.padding(16.dp)
                     .size(
                         width = 300.dp,
                         height = 60.dp,
@@ -57,7 +75,11 @@ fun Settings(
 
             Button(
                 onClick = onMediumDifficultyClick,
-                modifier = Modifier
+                colors = ButtonDefaults.buttonColors(
+                    backgroundColor = Color(Colors.blue),
+                    contentColor = Color(Colors.white)
+                ),
+                modifier = Modifier.padding(16.dp)
                     .size(
                         width = 300.dp,
                         height = 60.dp,
@@ -72,7 +94,11 @@ fun Settings(
 
             Button(
                 onClick = onHardDifficultyClick,
-                modifier = Modifier
+                colors = ButtonDefaults.buttonColors(
+                    backgroundColor = Color(Colors.blue),
+                    contentColor = Color(Colors.white)
+                ),
+                modifier = Modifier.padding(16.dp)
                     .size(
                         width = 300.dp,
                         height = 60.dp,
@@ -87,7 +113,11 @@ fun Settings(
 
             Button(
                 onClick = { dialogVisibility = true },
-                modifier = Modifier
+                colors = ButtonDefaults.buttonColors(
+                    backgroundColor = Color(Colors.blue),
+                    contentColor = Color(Colors.white)
+                ),
+                modifier = Modifier.padding(16.dp)
                     .size(
                         width = 300.dp,
                         height = 60.dp,
@@ -100,7 +130,14 @@ fun Settings(
                 )
             }
 
-            Button(onClick = onBackClick) {
+            Button(
+                onClick = onBackClick,
+                colors = ButtonDefaults.buttonColors(
+                    backgroundColor = Color(Colors.blueDark),
+                    contentColor = Color(Colors.white)
+                ),
+                modifier = Modifier.padding(32.dp),
+                ) {
                 Text(
                     text = "Back",
                     fontWeight = FontWeight.ExtraBold,
